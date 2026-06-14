@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Salaries & Capital Analytics - Sysarmy 2026</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc; 
+        }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        .tab-btn.active {
+            color: #059669; /* Verde Esmeralda Monetario */
+            background-color: #ffffff;
+            border-color: #10b981;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
+        }
+        /* Track del control de variables */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #059669;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 3px 6px rgba(5, 150, 105, 0.3);
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 min-h-screen antialiased selection:bg-emerald-100 selection:text-emerald-900">
+
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 flex flex-col xl:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4 w-full xl:w-auto">
+                <div class="p-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl text-white shadow-lg shadow-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="banknote" class="w-6 h-6"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h1 class="text-xs sm:text-sm font-extrabold tracking-wider text-white uppercase flex flex-wrap items-center gap-2">
+                        Valuación de Capital Humano IT <span class="text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">Indicador Financiero</span>
+                    </h1>
+                    <p class="text-[11px] sm:text-xs text-slate-400 font-medium truncate">Sysarmy Q1 2026 • Análisis Muestral de Experiencia y Salarios</p>
+                    <div class="flex flex-wrap items-center gap-1.5 mt-1 text-[10px] sm:text-[11px] text-emerald-400 font-semibold bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/50 w-full xl:w-fit leading-relaxed">
+                        <span class="text-slate-500 font-bold uppercase text-[9px] tracking-wider block sm:inline mr-1">Com D • Integrantes:</span>
+                        Graciela Brayan, Ana Aguirre, Mauro Alegre, Leonel Chamut, Osmely Gutierrez
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex bg-slate-800 p-1 rounded-xl border border-slate-700/50 shadow-inner w-full xl:w-auto justify-between sm:justify-center gap-1 overflow-x-auto whitespace-nowrap">
+                <button class="tab-btn active flex-1 xl:flex-none text-center px-3 sm:px-5 py-2 text-[10px] sm:text-xs font-bold rounded-lg text-slate-400 hover:text-white transition tracking-wide uppercase" data-tab="tab-dashboard">Métricas y Distribución</button>
+                <button class="tab-btn flex-1 xl:flex-none text-center px-3 sm:px-5 py-2 text-[10px] sm:text-xs font-bold rounded-lg text-slate-400 hover:text-white transition tracking-wide uppercase" data-tab="tab-teoria">Validación Teórica</button>
+                <button class="tab-btn flex-1 xl:flex-none text-center px-3 sm:px-5 py-2 text-[10px] sm:text-xs font-bold rounded-lg text-slate-400 hover:text-white transition tracking-wide uppercase" data-tab="tab-datos">Dataset Completo</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
+            
+            <aside class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-6 shadow-sm order-1">
+                <div>
+                    <h2 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-3.5 h-3.5 text-emerald-600"></i> Pipeline Económico
+                    </h2>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Carga de Encuesta Muestral</label>
+                        <label class="flex flex-col items-center justify-center gap-2.5 p-5 bg-slate-50 hover:bg-emerald-50/20 border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-xl cursor-pointer transition text-center group shadow-inner">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 shadow-sm group-hover:border-emerald-200 transition text-slate-400 group-hover:text-emerald-600 flex items-center justify-center">
+                                <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                            </div>
+                            <span id="csv-status-label" class="text-xs font-bold text-slate-600 group-hover:text-emerald-700 transition">Importar Archivo CSV</span>
+                            <input type="file" id="input-csv" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100"></div>
+
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            <label class="flex items-center gap-1.5"><i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-emerald-600"></i> Umbral de Experiencia</label>
+                            <span id="label-corte" class="text-emerald-700 font-mono font-bold bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-100/60">10 años</span>
+                        </div>
+                        <input type="range" id="param-corte" min="3" max="18" value="10" class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            <label class="flex items-center gap-1.5"><i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600"></i> Nivel de Confianza</label>
+                            <span id="label-confianza" class="text-emerald-700 font-mono font-bold bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-100/60">95%</span>
+                        </div>
+                        <input type="range" id="param-confianza" min="90" max="99" value="95" class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            <label class="flex items-center gap-1.5"><i data-lucide="database" class="w-3.5 h-3.5 text-slate-400"></i> Volumen Muestral</label>
+                            <span id="label-n" class="text-slate-400 font-mono font-bold">150 registros</span>
+                        </div>
+                        <input type="range" id="param-n" min="50" max="500" value="150" class="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-not-allowed opacity-40">
+                    </div>
+                </div>
+
+                <button id="btn-calcular" onclick="ejecutarMotorEstadistico()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-150 shadow-md flex items-center justify-center gap-2">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i> ¡EJECUTAR ANÁLISIS!
+                </button>
+            </aside>
+
+            <div class="lg:col-span-3 space-y-6 order-2">
+                
+                <section id="tab-dashboard" class="tab-pane active space-y-6">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 border-l-4 border-l-teal-500 flex items-center justify-between shadow-sm relative overflow-hidden group">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Remuneración Media (Segmento Inicial)</p>
+                                <p id="stat-media-baja" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">$ -</p>
+                            </div>
+                            <div class="p-2.5 bg-teal-50 text-teal-600 rounded-xl border border-teal-100 flex-shrink-0"><i data-lucide="coins" class="w-4 h-4 sm:w-5 sm:h-5"></i></div>
+                        </div>
+                        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 border-l-4 border-l-emerald-500 flex items-center justify-between shadow-sm relative overflow-hidden group">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Remuneración Media (Segmento Senior)</p>
+                                <p id="stat-media-alta" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">$ -</p>
+                            </div>
+                            <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100 flex-shrink-0"><i data-lucide="gem" class="w-4 h-4 sm:w-5 sm:h-5"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 border-l-4 border-l-emerald-500 space-y-2 shadow-sm">
+                        <div class="flex items-center gap-2 text-emerald-600 font-bold text-[11px] tracking-wider uppercase">
+                            <i data-lucide="trending-up" class="w-4 h-4"></i> Diagnóstico Macroeconómico del Contraste
+                        </div>
+                        <p id="ia-report-text" class="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
+                            Pipeline financiero listo. Por favor, importe el archivo CSV oficial de la encuesta de Sysarmy enviado por la cátedra para delegar el cálculo de vectores al servidor remoto de Python y levantar las distribuciones de ingresos.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                            <h3 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i data-lucide="user-check" class="w-4 h-4 text-indigo-500"></i> Distribución de años de experiencia</h3>
+                            <div class="relative w-full h-56 sm:h-64"><canvas id="canvas-dist-exp"></canvas></div>
+                        </div>
+                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                            <h3 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i data-lucide="banknote" class="w-4 h-4 text-emerald-500"></i> Distribución de los salarios</h3>
+                            <div class="relative w-full h-56 sm:h-64"><canvas id="canvas-dist-sal"></canvas></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <h3 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i data-lucide="line-chart" class="w-4 h-4 text-emerald-600"></i> Correlación Económica: Años de experiencia vs Salario</h3>
+                        <div class="relative w-full h-64 sm:h-80"><canvas id="canvas-scatter"></canvas></div>
+                    </div>
+                </section>
+
+                <section id="tab-teoria" class="tab-pane space-y-6">
+                    <div class="bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 space-y-5 shadow-sm">
+                        <h2 class="text-md font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                            <i data-lucide="binary" class="text-emerald-600 w-4 h-4"></i> Estimación de Parámetros por Intervalos de Confianza
+                        </h2>
+                        <div class="text-xs sm:text-sm text-slate-600 space-y-4 leading-relaxed font-normal">
+                            <p>Para comprobar si el segmento con mayor trayectoria en tecnología percibe salarios significativamente más altos, la API montada en <strong>FastAPI (Render)</strong> aísla los conjuntos de datos basándose en el parámetro de corte.</p>
+                            <p>Apoyados en el **Teorema del Límite Central** debido al robusto volumen de respuestas, el servidor invoca las distribuciones de la librería de Python **SciPy**, calculando las bandas flotantes bajo el siguiente modelo formal de la cátedra:</p>
+                            
+                            <div class="overflow-x-auto max-w-full my-6 p-4 bg-slate-900 text-emerald-400 rounded-xl border border-slate-800 shadow-xl">
+                                <div class="text-center font-mono min-w-[270px]">
+                                    $$IC = \bar{X} \pm Z_{\alpha/2} \times \left( \frac{S}{\sqrt{n}} \right)$$
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-5 border-t border-slate-100">
+                            <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                                <h4 class="text-[11px] font-bold uppercase text-slate-500 tracking-wider mb-4 flex items-center gap-1.5"><i data-lucide="split" class="w-3.5 h-3.5 text-emerald-600"></i> Bandas del Intervalo ($IC$ Flotante)</h4>
+                                <div class="relative w-full h-56 sm:h-64"><canvas id="canvas-bar-ci"></canvas></div>
+                            </div>
+                            <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                                <h4 class="text-[11px] font-bold uppercase text-slate-500 tracking-wider mb-4 flex items-center gap-1.5"><i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-teal-600"></i> Contraste de Medias Promedio</h4>
+                                <div class="relative w-full h-56 sm:h-64"><canvas id="canvas-bar-means"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="tab-datos" class="tab-pane space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                        
+                        <div class="md:col-span-2 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-4 shadow-sm">
+                            <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i data-lucide="list" class="w-4 h-4"></i> Registros Sanitizados por Pandas</h3>
+                            
+                            <div class="overflow-x-auto w-full border border-slate-100 rounded-xl shadow-inner max-h-96">
+                                <table id="table-salarios" class="w-full text-xs sm:text-sm text-left text-slate-600 min-w-[420px]">
+                                    <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200 sticky top-0 z-10">
+                                        <tr>
+                                            <th class="p-3">ID Muestra</th>
+                                            <th class="p-3">Años Exp</th>
+                                            <th class="p-3 text-right">Ingreso Neto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 font-medium text-slate-600"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between h-fit space-y-6 text-center shadow-sm">
+                            <div class="mx-auto p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-emerald-600 shadow-inner">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800">Exportar Reporte</h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Descargá la muestra completa filtrada y validada por el pipeline de Python para análisis locales en Excel o R.</p>
+                            </div>
+                            <button onclick="exportarCSV()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition shadow-sm">
+                                Descargar CSV
+                            </button>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="loader" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center z-50 hidden">
+        <div class="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin shadow-md"></div>
+        <p id="loader-text" class="mt-4 text-xs font-bold tracking-widest text-emerald-900 uppercase font-mono">Procesando registros en pipeline remoto...</p>
+    </div>
+
+    <script>
+        let archivoSeleccionado = null;
+        
+        // Memoria de instancias gráficas para evitar colisiones al recalcular sliders
+        let chartExpInstance = null;
+        let chartSalInstance = null;
+        let chartScatterInstance = null;
+        let chartCIInstance = null;
+        let chartMeansInstance = null;
+
+        // TABS NAVIGATION CON PARCHE EXCLUSIVO ANTI-ERRORES PARA CHART.JS
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                
+                btn.classList.add('active');
+                const targetId = btn.getAttribute('data-tab');
+                document.getElementById(targetId).classList.add('active');
+
+                // PARCHE CRÍTICO: Obliga a Chart.js a redibujar el tamaño exacto del Canvas
+                // al cambiar de pestañas ocultas (evita el error de renderizado en cero pixeles)
+                setTimeout(() => {
+                    if (chartExpInstance) chartExpInstance.resize();
+                    if (chartSalInstance) chartSalInstance.resize();
+                    if (chartScatterInstance) chartScatterInstance.resize();
+                    if (chartCIInstance) chartCIInstance.resize();
+                    if (chartMeansInstance) chartMeansInstance.resize();
+                    window.dispatchEvent(new Event('resize'));
+                }, 40);
+            });
+        });
+
+        // FILTROS LABELS SLIDERS
+        function actualizarLabelsSliders() {
+            document.getElementById('label-corte').innerText = document.getElementById('param-corte').value + " años";
+            document.getElementById('label-confianza').innerText = document.getElementById('param-confianza').value + "%";
+            document.getElementById('label-n').innerText = document.getElementById('param-n').value + " registros";
+        }
+
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', actualizarLabelsSliders);
+        });
+
+        // SUBIDA DE ARCHIVOS
+        function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            archivoSeleccionado = file;
+            const statusLabel = document.getElementById('csv-status-label');
+            statusLabel.innerText = file.name.length > 15 ? file.name.substring(0, 15) + "..." : file.name;
+            
+            document.getElementById('param-n').disabled = true;
+            document.getElementById('param-n').style.opacity = "0.3";
+        }
+
+        // COMUNICACIÓN ASÍNCRONA CON FASTAPI (RENDER)
+        async function ejecutarMotorEstadistico() {
+            if (!archivoSeleccionado) {
+                alert("¡ERROR DE ENTRADA! Por favor, cargue primero el archivo CSV de Sysarmy antes de procesar.");
+                return;
+            }
+
+            const loader = document.getElementById('loader');
+            const btnCalcular = document.getElementById('btn-calcular');
+            
+            loader.classList.remove('hidden');
+            btnCalcular.disabled = true;
+            btnCalcular.innerText = "EJECUTANDO PIPELINE...";
+
+            const corte = document.getElementById('param-corte').value;
+            const confianza = (document.getElementById('param-confianza').value / 100).toFixed(2);
+
+            const urlBackend = `https://api-salarios-sysarmy.onrender.com/analizar?corte_exp=${corte}&nivel_confianza=${confianza}`;
+
+            const formData = new FormData();
+            formData.append('file', archivoSeleccionado);
+
+            try {
+                const response = await fetch(urlBackend, { method: 'POST', body: formData });
+                if (!response.ok) throw new Error("Error de red en el servidor de Render.");
+                
+                const res = await response.json();
+                if (res.error) { alert(res.error); return; }
+
+                const fmt = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+                
+                const clavesGrupos = Object.keys(res.resultados_hipotesis);
+                const claveBaja = clavesGrupos.find(k => k.includes('Menos'));
+                const claveAlta = clavesGrupos.find(k => !k.includes('Menos')); 
+
+                const datosBaja = res.resultados_hipotesis[claveBaja];
+                const datosAlta = res.resultados_hipotesis[claveAlta];
+
+                document.getElementById('stat-media-baja').innerText = fmt.format(datosBaja.media);
+                document.getElementById('stat-media-alta').innerText = fmt.format(datosAlta.media);
+
+                const superposicion = (datosBaja.ic_superior >= datosAlta.ic_inferior);
+                const porcentajeBrecha = (((datosAlta.media - datosBaja.media) / datosBaja.media) * 100).toFixed(0);
+
+                document.getElementById('ia-report-text').innerHTML = `
+                    Segmentando la muestra sobre un universo de <strong>${res.total_muestra} registros validados</strong> bajo el criterio de 
+                    <strong>${corte} años de experiencia laboral</strong>, el pipeline de Python detecta una marcada brecha en los ingresos medios del 
+                    <strong class="text-emerald-600">${porcentajeBrecha}%</strong> a favor del conjunto con mayor trayectoria. 
+                    La estimación paramétrica calculada al <strong>${confianza * 100}% de confianza</strong> establece las bandas flotantes del segmento inicial en 
+                    <span class="text-slate-700 font-mono font-bold">[${fmt.format(datosBaja.ic_inferior)} - ${fmt.format(datosBaja.ic_superior)}]</span>, 
+                    mientras que el segmento experimentado consolida su intervalo en 
+                    <span class="text-slate-700 font-mono font-bold">[${fmt.format(datosAlta.ic_inferior)} - ${fmt.format(datosAlta.ic_superior)}]</span>. 
+                    ${superposicion ? 
+                        `⚠️ <strong>Observación metodológica:</strong> Los intervalos de confianza muestran superposición parcial. Se sugiere incrementar la muestra o ajustar el umbral paramétrico para consolidar la significancia estadística.` : 
+                        `🏆 <strong>Significancia Estadística Absoluta:</strong> Debido a la de nulidad de cruce o superposición entre los intervalos de confianza analizados, se rechaza formalmente la hipótesis nula de igualdad. Queda validado científicamente que el factor de trayectoria laboral correlaciona positivamente con un incremento directo de los ingresos.`}
+                `;
+
+                // Disparar renderizado en Canvas puros de Chart.js
+                renderizarGraficosCanvas(res, claveBaja, claveAlta);
+                llenarTablaHTML(res.datos_dispersion);
+
+            } catch (error) {
+                alert("¡FALLA CRÍTICA! Ocurrió un error al procesar o renderizar los vectores estadísticos.");
+                console.error(error);
+            } finally {
+                loader.classList.add('hidden');
+                btnCalcular.disabled = false;
+                btnCalcular.innerText = "¡EJECUTAR ANÁLISIS!";
+            }
+        }
+
+        // ========================================================
+        // 6. MOTOR DE RENDERIZACIÓN EXCLUSIVO (CHART.JS CANVAS)
+        // ========================================================
+        function renderizarGraficosCanvas(res, claveBaja, claveAlta) {
+            const datosBaja = res.resultados_hipotesis[claveBaja];
+            const datosAlta = res.resultados_hipotesis[claveAlta];
+
+            // Destrucción limpia previa
+            if (chartExpInstance) chartExpInstance.destroy();
+            if (chartSalInstance) chartSalInstance.destroy();
+            if (chartScatterInstance) chartScatterInstance.destroy();
+            if (chartCIInstance) chartCIInstance.destroy();
+            if (chartMeansInstance) chartMeansInstance.destroy();
+
+            const opcionesComunes = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10, weight: '500' } } },
+                    y: { grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                }
+            };
+
+            // --- HISTOGRAMA 1: DISTRIBUCIÓN DE EXPERIENCIA (ÍNDIGO TECH) ---
+            const ctxExp = document.getElementById('canvas-dist-exp').getContext('2d');
+            const expData = res.datos_dispersion.experiencia;
+            const expCounts = {};
+            expData.forEach(x => { expCounts[x] = (expCounts[x] || 0) + 1; });
+            const expLabels = Object.keys(expCounts).sort((a,b) => a-b);
+            const expValues = expLabels.map(l => expCounts[l]);
+
+            chartExpInstance = new Chart(ctxExp, {
+                type: 'bar',
+                data: {
+                    labels: expLabels.map(l => l + " a"),
+                    datasets: [{
+                        data: expValues,
+                        backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                        borderColor: '#4f46e5',
+                        borderWidth: 1.5,
+                        borderRadius: 4
+                    }]
+                },
+                options: opcionesComunes
+            });
+
+            // --- HISTOGRAMA 2: DISTRIBUCIÓN DE SALARIOS (MINT CURRENCY) ---
+            const ctxSal = document.getElementById('canvas-dist-sal').getContext('2d');
+            const salData = res.datos_dispersion.salarios;
+            const minSal = Math.min(...salData);
+            const maxSal = Math.max(...salData);
+            const numBrackets = 12;
+            const step = (maxSal - minSal) / numBrackets;
+            const bracketsLabels = [];
+            const bracketsValues = Array(numBrackets).fill(0);
+
+            for(let i=0; i<numBrackets; i++) {
+                const start = minSal + (i * step);
+                const end = start + step;
+                bracketsLabels.push(`${(start/1e6).toFixed(1)}M`);
+                salData.forEach(s => { if(s >= start && s <= end) bracketsValues[i]++; });
+            }
+
+            chartSalInstance = new Chart(ctxSal, {
+                type: 'bar',
+                data: {
+                    labels: bracketsLabels,
+                    datasets: [{
+                        data: bracketsValues,
+                        backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                        borderColor: '#10b981',
+                        borderWidth: 1.5,
+                        borderRadius: 4
+                    }]
+                },
+                options: opcionesComunes
+            });
+
+            // --- GRÁFICO 3: Nube de Dispersión Esmeralda Finanzas ---
+            const ctxScatter = document.getElementById('canvas-scatter').getContext('2d');
+            const scatterPoints = expData.map((exp, i) => ({ x: exp, y: salData[i] }));
+
+            chartScatterInstance = new Chart(ctxScatter, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        data: scatterPoints,
+                        backgroundColor: 'rgba(16, 185, 129, 0.14)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    ...opcionesComunes,
+                    scales: {
+                        x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } }
+                    }
+                }
+            });
+
+            // --- GRÁFICO 4: Floating Bars Finanzas ($IC$ Flotante) ---
+            const ctxCI = document.getElementById('canvas-bar-ci').getContext('2d');
+            chartCIInstance = new Chart(ctxCI, {
+                type: 'bar',
+                data: {
+                    labels: ['S. Inicial', 'S. Senior'],
+                    datasets: [{
+                        data: [
+                            [datosBaja.ic_inferior, datosBaja.ic_superior],
+                            [datosAlta.ic_inferior, datosAlta.ic_superior]
+                        ],
+                        backgroundColor: ['rgba(5, 150, 105, 0.06)', 'rgba(4, 120, 87, 0.06)'],
+                        borderColor: ['#059669', '#047857'],
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: opcionesComunes
+            });
+
+            // --- GRÁFICO 5: Contraste de Medias Muestrales ---
+            const ctxMeans = document.getElementById('canvas-bar-means').getContext('2d');
+            chartMeansInstance = new Chart(ctxMeans, {
+                type: 'bar',
+                data: {
+                    labels: ['S. Inicial', 'S. Senior'],
+                    datasets: [{
+                        data: [datosBaja.media, datosAlta.media],
+                        backgroundColor: ['rgba(16, 185, 129, 0.08)', 'rgba(79, 70, 229, 0.08)'],
+                        borderColor: ['#10b981', '#4f46e5'],
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: opcionesComunes
+            });
+        }
+
+        // LLENAR FILAS EN LA TABLA
+        function llenarTablaHTML(datosDispersion) {
+            const tbody = document.querySelector('#table-salarios tbody');
+            if (!tbody) return;
+
+            let htmlFilas = "";
+            for (let i = 0; i < datosDispersion.experiencia.length; i++) {
+                htmlFilas += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 text-slate-400 font-mono text-xs">REG_${String(i + 1).padStart(4, '0')}</td>
+                        <td class="p-3 font-semibold text-slate-700">${datosDispersion.experiencia[i]} años</td>
+                        <td class="p-3 font-bold text-emerald-600 text-right">$ ${datosDispersion.salarios[i].toLocaleString('es-AR')}</td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = htmlFilas;
+        }
+
+        // EXPORTACIÓN A CSV
+        function exportarCSV() {
+            const tbody = document.querySelector('#table-salarios tbody');
+            if (!tbody || tbody.children.length === 0) return;
+
+            let csvContent = "data:text/csv;charset=utf-8,ID,Anos_Experiencia,Salario_ARS\r\n";
+            const filas = tbody.querySelectorAll('tr');
+            
+            filas.forEach(fila => {
+                const columnas = fila.querySelectorAll('td');
+                const id = columnas[0].innerText;
+                const exp = columnas[1].innerText.replace(' años', '');
+                const sal = columnas[2].innerText.replace('$', '').replace(/\./g, '').trim();
+                csvContent += `${id},${exp},${sal}\r\n`;
+            });
+
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI(csvContent));
+            link.setAttribute("download", "pipeline_output_sysarmy.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.onload = function() {
+            actualizarLabelsSliders();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+
+</html>
