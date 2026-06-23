@@ -328,7 +328,7 @@
             const corte = document.getElementById('param-corte').value;
             const confianza = (document.getElementById('param-confianza').value / 100).toFixed(2);
 
-            const urlBackend = `https://api-salarios-sysarmy.onrender.com/analizar?corte_exp=${corte}&nivel_confianza=${confianza}`;
+            const urlBackend = `https://api-salarios-sysarmy.vercel.app/analizar?corte_exp=${corte}&nivel_confianza=${confianza}`;
 
             const formData = new FormData();
             formData.append('file', archivoSeleccionado);
